@@ -1,12 +1,12 @@
 $(document).ready(function () {
-  let newdict = {};
+  const newdict = {};
   $('input:checkbox').change(function () {
     if ($(this).is(':checked')) {
       newdict[$(this).attr('data-name')] = $(this).attr('data-id');
     } else {
       delete newdict[$(this).attr('data-name')];
     }
-    let list = [];
+    const list = [];
     $.each(newdict, function (index, value) {
       list.push(index);
     });
