@@ -1,5 +1,6 @@
 $(document).ready(function () {
   const newdict = {};
+  const apiurl = 'http://' + window.location.hostname;
   $('input:checkbox').change(function () {
     if ($(this).is(':checked')) {
       newdict[$(this).attr('data-name')] = $(this).attr('data-id');
@@ -17,7 +18,7 @@ $(document).ready(function () {
     }
   });
 
-  $.get('http://0.0.0.0:5001/api/v1/status/', function (data) {
+  $.get(apiurl + ':5001/api/v1/status/', function (data) {
     if (data.status === 'OK') {
       $('div#api_status').addClass('available');
     } else {
