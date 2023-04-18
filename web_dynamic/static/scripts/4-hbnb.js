@@ -1,6 +1,23 @@
 $(document).ready(function () {
   const amenityIDs = {};
   const apiurl = 'http://' + window.location.hostname;
+
+  function updateAvailablePlaces() {
+    $('section.places').empty();
+    $.ajax({
+      type: 'POST',
+      contentType: 'application/json',
+      url: apiurl + ':5001/api/v1/places_search/',
+      data: JSON.stringify({ amenities: Object.values(amenityIDs) }),
+      success: function (data) {
+        $.each(data, function (index, place) {
+          $('section.places').append('<article><div class="title_box"><h2>' + place.name + '</h2><div class="price_by_night">$' + place.price_by_night + '</div></div><div class="information"><div class="max_guest">' + place.max_guest + ' Guest(s)</div><div class="number_rooms">' + place.number_rooms + ' Bedroom(s)</div><div class="number_bathrooms">' + place.number_bathrooms + ' Bathroom(s)</div></div><div class="description">' + place.description + '</div></article>');
+        });
+      },
+      dataType: 'json'
+    });
+  }
+
   $('input[type="checkbox"]').click(function () {
     if ($(this).is(':checked')) {
       amenityIDs[$(this).attr('data-name')] = $(this).attr('data-id');
@@ -16,6 +33,7 @@ $(document).ready(function () {
     } else {
       $('.amenities h4').text(list.join(', '));
     }
+    updateAvailablePlaces();
   });
 
   $.get(apiurl + ':5001/api/v1/status/', function (data) {
@@ -26,32 +44,7 @@ $(document).ready(function () {
     }
   });
 
-  $.ajax({
-    type: 'POST',
-    contentType: 'application/json',
-    url: apiurl + ':5001/api/v1/places_search/',
-    data: JSON.stringify({}),
-    success: function (data) {
-      $.each(data, function (index, place) {
-        $('section.places').append('<article><div class="title_box"><h2>' + place.name + '</h2><div class="price_by_night">$' + place.price_by_night + '</div></div><div class="information"><div class="max_guest">' + place.max_guest + ' Guest(s)</div><div class="number_rooms">' + place.number_rooms + ' Bedroom(s)</div><div class="number_bathrooms">' + place.number_bathrooms + ' Bathroom(s)</div></div><div class="description">' + place.description + '</div></article>');
-      });
-    },
-    dataType: 'json'
-  });
-
   $('button').click(function () {
-    $('section.places').empty();
-    $.ajax({
-      type: 'POST',
-      contentType: 'application/json',
-      url: apiurl + ':5001/api/v1/places_search/',
-      data: JSON.stringify({ amenities: Object.values(amenityIDs) }),
-      success: function (data) {
-        $.each(data, function (index, place) {
-          $('section.places').append('<article><div class="title_box"><h2>' + place.name + '</h2><div class="price_by_night">$' + place.price_by_night + '</div></div><div class="information"><div class="max_guest">' + place.max_guest + ' Guest(s)</div><div class="number_rooms">' + place.number_rooms + ' Bedroom(s)</div><div class="number_bathrooms">' + place.number_bathrooms + ' Bathroom(s)</div></div><div class="description">' + place.description + '</div></article>');
-        });
-      },
-      dataType: 'json'
-    });
+    updateAvailablePlaces();
   });
 });
