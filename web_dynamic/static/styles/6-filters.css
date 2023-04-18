@@ -101,3 +101,15 @@ button:hover {
 .locations:hover .popover {
     visibility: visible;
 }
+
+.amenities li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 5px;
+}
+
+.amenities li input[type=checkbox] {
+    position: absolute;
+    left: 10px;
+    top: 2px;
+}
